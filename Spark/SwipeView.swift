@@ -37,17 +37,12 @@ class SwipeView: UIView {
         cardView.translatesAutoresizingMaskIntoConstraints = false
         setCardViewConstraints()
     }
-    
+        
     private func setCardViewConstraints() {
         cardView.topAnchor.constraint(equalTo: self.topAnchor, constant:CGFloat(Constants.kSwipeViewPadding)).isActive = true
         cardView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: CGFloat(Constants.kSwipeViewPadding * -1.0)).isActive = true
         cardView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: CGFloat(Constants.kSwipeViewPadding)).isActive = true
         cardView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: CGFloat(Constants.kSwipeViewPadding * -1.0)).isActive = true
-    }
-    
-    func swipeViewSwiped(gestureRecognizer: UIPanGestureRecognizer) {
-        let distance = gestureRecognizer.translation(in: self)
-        print(distance)
     }
 
 }
