@@ -30,15 +30,12 @@ class SwipeView: UIView {
     
     private func initialize() {
         self.backgroundColor = Constants.kSwipeViewBackgroundColor
-        self.layer.shadowColor
-        self.layer.shadowOffset
-        self.layer.shadowOpacity
+        self.layer.shadowColor = Constants.kSwipeViewShadowColor.cgColor
+        self.layer.shadowOffset = CGSize(width: CGFloat(Constants.kSwipeViewShadowOffset), height: CGFloat(Constants.kSwipeViewShadowOffset))
+        self.layer.shadowOpacity = Float(Constants.kSwipeViewShadowOpacity)
         self.addSubview(cardView)
         cardView.translatesAutoresizingMaskIntoConstraints = false
         setCardViewConstraints()
-        
-        self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(swipeViewSwiped(gestureRecognizer:))))
-        
     }
     
     private func setCardViewConstraints() {

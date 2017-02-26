@@ -35,7 +35,6 @@ class CardView: UIView {
         self.addSubview(imageView)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(nameLabel)
-        self.layer.borderWidth = CGFloat(Constants.kCardViewBorderWidth)
         self.layer.cornerRadius = CGFloat(Constants.kCardViewCornerRadius)
         self.layer.masksToBounds = true
         setConstraints()

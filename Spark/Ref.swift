@@ -10,18 +10,20 @@ import Foundation
 import UIKit
 
 class Constants {
-    static let kCardViewBorderWidth = 0.5
     static let kCardViewCornerRadius = 3.0
     static let kCardViewImageBackgroundColor = UIColor.red
     static let kCardViewNameLabelXMargin = 10.0
-    static let kCardViewNameLabelHeight = 20.0
-    static let kSwipeViewPadding = 5.0
+    static let kCardViewNameLabelHeight = 30.0
     
-    static let kSwipeViewBackgroundColor = UIColor.lightGray
+    static let kSwipeViewPadding = 10.0
+    static let kSwipeViewBackgroundColor = UIColor.white
+    static let kSwipeViewShadowColor = UIColor.lightGray
+    static let kSwipeViewShadowOpacity = 0.5
+    static let kSwipeViewShadowOffset = 1.0
     
     static let kCardStackTopOffset = 100.0
-    static let kCardStackWidthMultiplier = 0.5
-    static let kCardStackHeightMultiplier = 0.3
+    static let kCardStackWidthMultiplier = 0.8
+    static let kCardStackHeightMultiplier = 0.5
     
-    static let kCardOffsetMargin = 3.0
+    static let kCardOffsetMargin = 10.0
 }

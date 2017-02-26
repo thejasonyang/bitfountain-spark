@@ -19,8 +19,8 @@ class CardsViewController: UIViewController {
         self.view.addSubview(nextCard)
         self.view.addSubview(currentCard)
         
-        setupSwipeViewConstraints(swipeView: nextCard, offset: 0.0)
-        setupSwipeViewConstraints(swipeView: currentCard, offset: CGFloat(Constants.kCardOffsetMargin))
+        setupSwipeViewConstraints(swipeView: nextCard, offset: CGFloat(Constants.kCardOffsetMargin))
+        setupSwipeViewConstraints(swipeView: currentCard, offset: 0.0)
         
     }
 
