@@ -26,4 +26,14 @@ class Constants {
     static let kCardStackHeightMultiplier = 0.5
     
     static let kCardOffsetMargin = 10.0
+    
+    static let kSwipeViewBounceBackMass = 1.0
+    static let kSwipeViewBounceBackStiffness = 150.0
+    static let kSwipeViewBounceBackDamping = 20.0
+    
+    static let kSwipeViewRotationAngle = 30.0
+    
+    static let kStackViewScaleDifference = 0.05
+    static let kStackViewYOffset = 5.0
+    
 }
