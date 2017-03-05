@@ -15,9 +15,14 @@ class CardsViewController: UIViewController, StackViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.addSubview(stackView)
+        stackView.dataSource = self
         
+        self.view.addSubview(stackView)
         setupStackView()
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
         stackView.initializeStack()
     }
 
@@ -39,7 +44,7 @@ class CardsViewController: UIViewController, StackViewDataSource {
     //MARK: StackViewDataSource
     
     func numberOfSwipeViewsInStack() -> Int {
-        return 2
+        return 3
     }
     
     func swipeViewForIndex(index: Int) -> SwipeView {

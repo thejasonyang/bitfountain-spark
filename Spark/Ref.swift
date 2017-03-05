@@ -18,7 +18,7 @@ class Constants {
     static let kSwipeViewPadding = 10.0
     static let kSwipeViewBackgroundColor = UIColor.white
     static let kSwipeViewShadowColor = UIColor.lightGray
-    static let kSwipeViewShadowOpacity = 0.5
+    static let kSwipeViewShadowOpacity = 0.25
     static let kSwipeViewShadowOffset = 1.0
     
     static let kCardStackTopOffset = 100.0
@@ -34,6 +34,9 @@ class Constants {
     static let kSwipeViewRotationAngle = 30.0
     
     static let kStackViewScaleDifference = 0.05
-    static let kStackViewYOffset = 5.0
+    static let kStackViewAlphaDifference = 0.18
+    static let kStackViewYOffset = 2.8
+    
+    static let kStackViewSwipeCompletionPercentage = 0.75
     
 }

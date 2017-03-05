@@ -8,20 +8,15 @@
 
 import UIKit
 
-protocol StackViewDelegate {
-    func swipeViewDidFinishSwiping()
-}
-
 protocol StackViewDataSource {
     func numberOfSwipeViewsInStack() -> Int
     func swipeViewForIndex(index: Int) -> SwipeView
 }
 
-class StackView: UIView {
+class StackView: UIView, SwipeViewDelegate {
     
-    var delegate: StackViewDelegate?
     var dataSource: StackViewDataSource?
-    var swipeViewArray: [SwipeView] = []
+    var swipeViewStack: [SwipeView] = []
     
     //MARK: Init
     
@@ -39,13 +34,25 @@ class StackView: UIView {
     
     func initializeStack() {
         let numberOfSwipeViews = dataSource?.numberOfSwipeViewsInStack()
-        for index in 0...numberOfSwipeViews! {
-            let newSwipeView = SwipeView()
-            let scale = 1.0 - (CGFloat(index) * CGFloat(Constants.kStackViewScaleDifference))
-            let yOffset = CGFloat(index) * CGFloat(Constants.kStackViewYOffset)
-            setupSwipeViewConstraints(swipeView: newSwipeView, scale: scale, yOffset: yOffset)
+        
+        for index in 0...numberOfSwipeViews! - 1 {
+            swipeViewStack.append(SwipeView())
+            
+            if index == 0 {
+                self.addSubview(swipeViewStack[index])
+                swipeViewStack[index].enableSwipe()
+            } else {
+                self.insertSubview(swipeViewStack[index], belowSubview: swipeViewStack[index - 1])
+                swipeViewStack[index].alpha = 1.0 - CGFloat(index) * CGFloat(Constants.kStackViewAlphaDifference)
+            }
+            
+            let scale = 1.0 - CGFloat(index) * CGFloat(Constants.kStackViewScaleDifference)
+            let yOffset = (self.frame.height * CGFloat(index) * CGFloat(Constants.kStackViewScaleDifference))/2 * CGFloat(Constants.kStackViewYOffset)
+            setupSwipeViewConstraints(swipeView: swipeViewStack[index], scale: scale, yOffset: yOffset)
+            
         }
-        swipeViewArray[0].enableSwipe()
+        
+        
     }
     
     private func setupSwipeViewConstraints(swipeView: SwipeView, scale: CGFloat, yOffset: CGFloat) {
@@ -56,7 +63,11 @@ class StackView: UIView {
         swipeView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: scale).isActive = true
     }
     
-    
+    func actionForSwipeCompletionPercentage(swipeCompletionPercentage: CGFloat) {
+        if swipeCompletionPercentage > CGFloat(Constants.kStackViewSwipeCompletionPercentage) {
+            
+        }
+    }
     
 
 }

@@ -9,8 +9,13 @@
 import Foundation
 import UIKit
 
+protocol SwipeViewDelegate {
+    func actionForSwipeCompletionPercentage(swipeCompletionPercentage: CGFloat)
+}
+
 class SwipeView: UIView {
     
+    var delegate: SwipeViewDelegate?
     private let cardView: CardView = CardView()
     private var startingCenter: CGPoint?
     
