@@ -64,9 +64,13 @@ class StackView: UIView, SwipeViewDelegate {
     }
     
     func actionForSwipeCompletionPercentage(swipeCompletionPercentage: CGFloat) {
-        if swipeCompletionPercentage > CGFloat(Constants.kStackViewSwipeCompletionPercentage) {
+        if swipeCompletionPercentage > CGFloat(Constants.kSwipeViewCompletionTrigger) {
             
         }
+    }
+    
+    func swipeViewDidFinishSwiping(swipeRight: Bool) {
+        
     }
     
 

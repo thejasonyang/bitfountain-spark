@@ -37,6 +37,8 @@ class Constants {
     static let kStackViewAlphaDifference = 0.18
     static let kStackViewYOffset = 2.8
     
-    static let kStackViewSwipeCompletionPercentage = 0.75
+    static let kSwipeViewCompletionTrigger = 1.0
+    static let kSwipeViewCompletionWidthMultiplier = 1.5
+    static let kSwipeViewCompletionHeightMultiplier = 0.7
     
 }

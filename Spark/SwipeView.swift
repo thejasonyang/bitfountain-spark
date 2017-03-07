@@ -11,6 +11,7 @@ import UIKit
 
 protocol SwipeViewDelegate {
     func actionForSwipeCompletionPercentage(swipeCompletionPercentage: CGFloat)
+    func swipeViewDidFinishSwiping(swipeRight: Bool)
 }
 
 class SwipeView: UIView {
@@ -66,26 +67,64 @@ class SwipeView: UIView {
             self.layer.shouldRasterize = true
             break
         case .changed:
-            let distance = gestureRecognizer.translation(in: self.superview!)
+            let distance = gestureRecognizer.translation(in: self.superview!.superview!)
             let direction: CGFloat = distance.x <= 0.0 ? -1.0 : 1.0
-            let strength = abs(distance.x) / self.superview!.frame.width
+            let strength = abs(distance.x) / self.superview!.superview!.frame.width
             let rotationAngle = direction * min(strength * (CGFloat(Constants.kSwipeViewRotationAngle) * CGFloat(M_PI_2) / 180), CGFloat(Constants.kSwipeViewRotationAngle) * CGFloat(M_PI_2) / 180)
             let rotationTransform = CGAffineTransform(rotationAngle: rotationAngle)
             self.transform = rotationTransform
             self.center = CGPoint(x: startingCenter!.x + distance.x, y: startingCenter!.y + distance.y)
+            let completionPercentage = distance.x / (self.superview!.superview!.frame.width / 2)
+            delegate?.actionForSwipeCompletionPercentage(swipeCompletionPercentage: completionPercentage)
             break
         case .ended:
-            let timing = UISpringTimingParameters(mass: CGFloat(Constants.kSwipeViewBounceBackMass), stiffness: CGFloat(Constants.kSwipeViewBounceBackStiffness), damping: CGFloat(Constants.kSwipeViewBounceBackDamping), initialVelocity: CGVector(dx: 0.0, dy: 0.0))
-            let animator = UIViewPropertyAnimator(duration: 0.0, timingParameters: timing)
-            animator.addAnimations {
-                let rotationTransform = CGAffineTransform(rotationAngle: 0)
-                self.transform = rotationTransform
-                self.center = self.startingCenter!
+            let distance = gestureRecognizer.translation(in: self.superview!.superview!)
+            let completionPercentage = distance.x / (self.superview!.superview!.frame.width / 2)
+            if completionPercentage >= CGFloat(Constants.kSwipeViewCompletionTrigger) {
+                let timing = UISpringTimingParameters(mass: CGFloat(Constants.kSwipeViewBounceBackMass), stiffness: CGFloat(Constants.kSwipeViewBounceBackStiffness), damping: CGFloat(Constants.kSwipeViewBounceBackDamping), initialVelocity: CGVector(dx: 0.0, dy: 0.0))
+                let animator = UIViewPropertyAnimator(duration: 0.0, timingParameters: timing)
+                animator.addAnimations {
+                    let rotationAngle = CGFloat(Constants.kSwipeViewRotationAngle) * CGFloat(M_PI_2) / 180
+                    let rotationTransform = CGAffineTransform(rotationAngle: rotationAngle)
+                    self.transform = rotationTransform
+                    self.center.x = self.superview!.superview!.frame.width * CGFloat(Constants.kSwipeViewCompletionWidthMultiplier)
+                    self.center.y = self.superview!.superview!.frame.width * CGFloat(Constants.kSwipeViewCompletionHeightMultiplier)
+                }
+                animator.addCompletion({ (animatingPosition) in
+                    self.delegate?.swipeViewDidFinishSwiping(swipeRight: true)
+                    self.layer.shouldRasterize = false
+                    self.removeFromSuperview()
+                })
+                animator.startAnimation()
+            } else if completionPercentage <= CGFloat(Constants.kSwipeViewCompletionTrigger) * -1.0 {
+                let timing = UISpringTimingParameters(mass: CGFloat(Constants.kSwipeViewBounceBackMass), stiffness: CGFloat(Constants.kSwipeViewBounceBackStiffness), damping: CGFloat(Constants.kSwipeViewBounceBackDamping), initialVelocity: CGVector(dx: 0.0, dy: 0.0))
+                let animator = UIViewPropertyAnimator(duration: 0.0, timingParameters: timing)
+                animator.addAnimations {
+                    let rotationAngle = -1.0 * CGFloat(Constants.kSwipeViewRotationAngle) * CGFloat(M_PI_2) / 180
+                    let rotationTransform = CGAffineTransform(rotationAngle: rotationAngle)
+                    self.transform = rotationTransform
+                    self.center.x = -1.0 * self.superview!.superview!.frame.width * CGFloat(Constants.kSwipeViewCompletionWidthMultiplier)
+                    self.center.y = self.superview!.superview!.frame.width * CGFloat(Constants.kSwipeViewCompletionHeightMultiplier)
+                }
+                animator.addCompletion({ (animatingPosition) in
+                    self.delegate?.swipeViewDidFinishSwiping(swipeRight: false)
+                    self.layer.shouldRasterize = false
+                    self.removeFromSuperview()
+                })
+                animator.startAnimation()
+            } else {
+                let timing = UISpringTimingParameters(mass: CGFloat(Constants.kSwipeViewBounceBackMass), stiffness: CGFloat(Constants.kSwipeViewBounceBackStiffness), damping: CGFloat(Constants.kSwipeViewBounceBackDamping), initialVelocity: CGVector(dx: 0.0, dy: 0.0))
+                let animator = UIViewPropertyAnimator(duration: 0.0, timingParameters: timing)
+                animator.addAnimations {
+                    let rotationTransform = CGAffineTransform(rotationAngle: 0)
+                    self.transform = rotationTransform
+                    self.center = self.startingCenter!
+                }
+                animator.addCompletion({ (animatingPosition) in
+                    self.layer.shouldRasterize = false
+                })
+                animator.startAnimation()
             }
-            animator.addCompletion({ (animatingPosition) in
-                self.layer.shouldRasterize = false
-            })
-            animator.startAnimation()
             break
         default:
             break
